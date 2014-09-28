@@ -97,7 +97,7 @@
                 {
                     var cell = GetCell(x, y);
 
-                    line.Append(cell.IsAlive ? "1" : " ");
+                    line.Append(cell.IsAlive ? "+" : " ");
                 }
 
                 yield return line.ToString();
