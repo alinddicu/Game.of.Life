@@ -9,7 +9,7 @@
             IsAlive = true;
         }
 
-        public bool IsAlive { get; private set; }
+        public bool IsAlive { get; set; }
 
         public uint X { get; private set; }
 
@@ -22,7 +22,7 @@
 
         private bool Equals(Cell other)
         {
-            return X == other.X && Y == other.Y;
+            return Equals(X, other.X) && Equals(Y, other.Y);
         }
 
         public override bool Equals(object obj)
@@ -32,27 +32,29 @@
                 return false;
             }
 
-            return obj is Cell && Equals((Cell)obj);
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            return obj.GetType() == this.GetType() && this.Equals((Cell)obj);
         }
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                var hashCode = (int)X;
-                hashCode = (hashCode * 397) ^ Y.GetHashCode();
-                return hashCode;
-            }
+            var hashCode = (int)X;
+            hashCode = (hashCode * 397) ^ Y.GetHashCode();
+            return hashCode;
         }
 
         public static bool operator ==(Cell left, Cell right)
         {
-            return left.Equals(right);
+            return Equals(left, right);
         }
 
         public static bool operator !=(Cell left, Cell right)
         {
-            return !left.Equals(right);
+            return !Equals(left, right);
         }
     }
 }
