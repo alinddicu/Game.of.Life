@@ -20,12 +20,7 @@
                 {
                     var cell = _board.GetCell(x, y);
 
-                    if (cell == null)
-                    {
-                        continue;
-                    }
-
-                    var aliveNeighbours = this._board.CountAliveNeighbours(cell);
+                    var aliveNeighbours = _board.CountAliveNeighbours(cell);
                     if (cell.IsAlive)
                     {
                         if (aliveNeighbours < 2 || aliveNeighbours > 3)

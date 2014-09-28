@@ -6,7 +6,6 @@
         {
             X = x;
             Y = y;
-            IsAlive = true;
         }
 
         public bool IsAlive { get; set; }

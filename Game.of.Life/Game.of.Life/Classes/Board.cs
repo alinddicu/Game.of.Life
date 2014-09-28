@@ -8,35 +8,21 @@
 
     public class Board
     {
-        private readonly uint _height;
-        private readonly uint _width;
         private readonly Cell[,] _cells;
 
         public Board(uint height, uint width, IEnumerable<Cell> aliveCells)
         {
-            this._height = height;
-            this._width = width;
-            _cells = new Cell[this.Height, this.Width];
+            Height = height;
+            Width = width;
+            _cells = new Cell[Height, Width];
 
             VerifyAssignableCells(aliveCells);
             InitAliveCells(aliveCells);
         }
 
-        public uint Height
-        {
-            get
-            {
-                return _height;
-            }
-        }
+        public uint Height { get; private set; }
 
-        public uint Width
-        {
-            get
-            {
-                return _width;
-            }
-        }
+        public uint Width { get; private set; }
 
         private void VerifyAssignableCells(IEnumerable<Cell> aliveCells)
         {
@@ -51,17 +37,26 @@
 
         private void InitAliveCells(IEnumerable<Cell> aliveCells)
         {
-            foreach (var aliveCell in aliveCells)
+            for (uint i = 0; i < Width; i++)
             {
-                _cells[aliveCell.X, aliveCell.Y] = aliveCell;
+                for (uint j = 0; j < Height; j++)
+                {
+                    var cell = new Cell(i, j);
+                    if (aliveCells.Contains(cell))
+                    {
+                        cell.IsAlive = true;
+                    }
+
+                    _cells[i, j] = cell;
+                }
             }
         }
 
         private IEnumerable<Cell> GetNeighbours(Cell cell)
         {
-            for (var i = (int)cell.X - 1; i < (int)cell.X + 1; i++)
+            for (var i = (int)cell.X - 1; i <= (int)cell.X + 1; i++)
             {
-                for (var j = (int)cell.Y - 1; j < (int)cell.Y + 1; j++)
+                for (var j = (int)cell.Y - 1; j <= (int)cell.Y + 1; j++)
                 {
                     if (!this.CoordsAreInBoard(i, j))
                     {
@@ -102,18 +97,7 @@
                 {
                     var cell = GetCell(x, y);
 
-                    if (cell == null)
-                    {
-                        line.Append("X");
-                    }
-                    else if (cell.IsAlive)
-                    {
-                        line.Append("1");
-                    }
-                    else
-                    {
-                        line.Append("0");
-                    }
+                    line.Append(cell.IsAlive ? "1" : " ");
                 }
 
                 yield return line.ToString();

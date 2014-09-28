@@ -30,7 +30,7 @@
                 }
 
                 Thread.Sleep(1000);
-                Console.ReadLine();
+                //Console.ReadLine();
                 Console.Clear();
             }
         }
